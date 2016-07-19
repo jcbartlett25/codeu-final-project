@@ -1,33 +1,53 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
+
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.6.RELEASE")
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
     }
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 
-jar {
-    baseName = 'gs-rest-service'
-    version =  '0.1.0'
-}
+// JDK version source compatibility
+sourceCompatibility = 1.7
+// project version
+version = '1.0'
+// War file name
+war.baseName = 'jcg-gradle-war-example'
+// Web directory, this overrides the default value "webapp"
+project.webAppDirName = 'WebContent'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+// Set source directory
+sourceSets {
+        main {
+            java {
+                srcDir 'src'
+            }
+        }
+    }
 
+// dependencies to run on tomcat, are mandatory for tomcat plugin
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    def tomcatVersion = '7.0.57'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
 }
+
+// context where tomcat is deployed, by defautl localhost:8080/
+tomcatRun.contextPath = '/'
+tomcatRunWar.contextPath = '/'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
