@@ -19,5 +19,5 @@
 ### Gradle to the rescue!
 * Thanks to the awesomeness and simplicity that is gradle, running our project is quick and painless
 * All you need to do is make sure you have Java installed, then install [Gradle](https://docs.gradle.org/current/userguide/installation.html "Gradle")
-* After that, cd into the root of the project directory and run ```gradle jettyRun```
+* After that, cd into the root of the project directory and run ```gradle jettyRun``` then head on over to `localhost:8080` on your browser
 
