@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
@@ -37,38 +39,33 @@ public class WelcomeController {
         this.helloWorldService = helloWorldService;
     }
 
+    // Index page routing
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Map<String, Object> model) {
 
-        logger.debug("index() is executed!");
-
-        model.put("title", helloWorldService.getTitle(""));
-        model.put("msg", helloWorldService.getDesc());
+        logger.debug("Homepage requested!");
         
         return "index";
     }
 
-    @RequestMapping(value = "/hello/{name:.+}", method = RequestMethod.GET)
-    public ModelAndView hello(@PathVariable("name") String name) {
+    // Random page routing
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
+    public String random(Map<String, Object> model) {
 
-        logger.debug("hello() is executed - $name {}", name);
-
-        ModelAndView model = new ModelAndView();
-        model.setViewName("index");
+        logger.debug("Randompage requested!");
         
-        model.addObject("title", helloWorldService.getTitle(name));
-        model.addObject("msg", helloWorldService.getDesc());
-        
-        return model;
-
+        return "random";
     }
+  
+    @RequestMapping(value="/api/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam("term") String term) {
 
-    
-    @Path("/api/search")
-    @Produces(MediaType.APPLICATION_JSON)
-    public boolean search() {
         logger.debug("path hit!");
-        return true;
+        logger.debug("search term: " + term);
+        
+        ModelAndView model = helloWorldService.search(term);
+
+        return model;
     }
 
 

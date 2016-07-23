@@ -9,7 +9,7 @@ angular
               var param = {'term': term};
               var request = $http({
                   method: 'get',
-                  url: '/search/api/search',
+                  url: '/api/search',
                   params: param
               });
 
@@ -17,13 +17,14 @@ angular
           }
 
           function handleError(response) {
-              
+              console.log(response.data);
               return response.data;
           }
 
           // The successful response is transformed, unwrapping the application data
           // from the API response payload.
           function handleSuccess( response, status ) {
+              console.log(response.data);
               return( response.data );
           }
       });

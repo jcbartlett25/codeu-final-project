@@ -4,30 +4,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.View;
+
+import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class HelloWorldService {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldService.class);
 
-    public String getDesc() {
+    public ModelAndView search(String term) {
 
-        logger.debug("getDesc() is executed!");
+        ModelAndView model = new ModelAndView();
+        model.setViewName("random");
 
-        return "Gradle + Spring MVC Hello World Example";
-
-    }
-
-    public String getTitle(String name) {
-
-        logger.debug("getTitle() is executed! $name : {}", name);
-
-        if(StringUtils.isEmpty(name)){
-            return "Hello World";
-        }else{
-            return "Hello " + name;
-        }
+        model.addObject("link1", "twitter.com");
+        model.addObject("link2", "facebook.com");
         
+        return model;
     }
 
 }

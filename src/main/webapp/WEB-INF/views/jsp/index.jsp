@@ -38,17 +38,20 @@
         </ul>
     </nav>
     <div class="container">
-        <h1 class="text-center" id="search_title">I wanna find...</h1><br>
+        <h1 class="text-center" id="search_title">WikiSearch</h1><br>
     </div>
     <div class="container">
         <div class="col-lg-4 col-lg-offset-4">
             <div class="input-group">
-                <input type="text" id="search_field" ng-model="term" class="form-control" />
+                <input type="text" id="search_field" type="text" placeholder="What are you looking for?" ng-model="term" class="form-control" />
                 <span class="input-group-btn">
                     <button class="btn btn-default" ng-click="search()" type="button">Go!</button>
                 </span>
             </div>
         </div>
+    </div>
+    <div class="container">
+        <h6 claass="text-center" style="color:white;">hi</h6>
     </div>
 </body>
 </html>
