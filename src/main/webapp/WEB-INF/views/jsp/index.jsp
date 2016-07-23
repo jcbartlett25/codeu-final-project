@@ -45,7 +45,7 @@
             <div class="input-group">
                 <input type="text" id="search_field" ng-model="term" class="form-control" />
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
+                    <button class="btn btn-default" ng-click="search()" type="button">Go!</button>
                 </span>
             </div>
         </div>

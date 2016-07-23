@@ -22,7 +22,7 @@
 
     <servlet-mapping>
         <servlet-name>hello-dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/search/*</url-pattern>
     </servlet-mapping>
 
     <!-- For root context -->

@@ -4,4 +4,8 @@ angular
 
           $scope.term = 'What are you looking for?';
 
+          $scope.search = function() {
+              
+              searchService.search($scope.term);
+          }
       });

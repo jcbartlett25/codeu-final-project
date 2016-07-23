@@ -6,26 +6,19 @@ angular
           
           function search(term) {
 
+              var param = {'term': term};
               var request = $http({
                   method: 'get',
-                  url: 'hello',
-                  params: term
+                  url: '/search/api/search',
+                  params: param
               });
 
               return(request.then(handleSuccess, handleError));
           }
 
           function handleError(response) {
-
-              if( globalUtils.handleErrorResponse(response) ) return;
               
-              if (!angular.isObject( response.data ) || !response.data.message) {
-
-                  return($q.reject( "An unknown error occurred." ));
-              }
-
-              // Otherwise, use expected error message.
-              return( $q.reject( response.data.message ) );
+              return response.data;
           }
 
           // The successful response is transformed, unwrapping the application data
