@@ -14,7 +14,6 @@ import redis.clients.jedis.Jedis;
 @Service
 public class HelloWorldService {
 
-
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldService.class);
 
     public ModelAndView search(String term) throws IOException {
@@ -32,7 +31,7 @@ public class HelloWorldService {
 
         WikiSearch wikisearch = WikiSearch.search(term, index); 
 
-        System.out.println(wikisearch);
+        wikisearch.print();
 
         ModelAndView model = new ModelAndView();
         model.setViewName("random");
