@@ -32,9 +32,6 @@
 <body ng-app="searchApp" ng-controller="searchController">
     <nav>
         <ul class="nav nav-pills">
-            <li role="presentation"><a href="#">Google CodeU!</a></li>
-            <li role="presentation"><a href="#">What Is This?</a></li>
-            <li role="presentation"><a href="#">How Does It Work?</a></li>
         </ul>
     </nav>
     <div class="container">
@@ -45,10 +42,18 @@
             <div class="input-group">
                 <input type="text" id="search_field" type="text" placeholder="What are you looking for?" ng-model="term" class="form-control" />
                 <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="search()" ng-submit="search()" type="button">Go!</button>
+                    <button class="btn btn-default" ng-click="search()" id="search_button" ng-submit="search()" type="button">Go!</button>
                 </span>
             </div>
         </div>
+    </div>
+    <div>
+        <img class="center-block" ng-show="loading" src="/resources/img/loading.gif" height="30px"/>
+    <div>
+    <div>
+        <ul style="color:white;">
+            <li ng-repeat="url in urls">{{url}}</lI>
+        </ul>
     </div>
 </body>
 </html>
