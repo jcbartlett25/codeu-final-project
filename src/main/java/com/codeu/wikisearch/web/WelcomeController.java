@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -58,12 +60,19 @@ public class WelcomeController {
     }
   
     @RequestMapping(value="/api/search", method = RequestMethod.GET)
-    public ModelAndView search(@RequestParam("term") String term) {
+    public ModelAndView search(@RequestParam("term") String term) throws IOException {
 
         logger.debug("path hit!");
         logger.debug("search term: " + term);
         
-        ModelAndView model = helloWorldService.search(term);
+        ModelAndView model = null;
+
+        try {
+            model = helloWorldService.search(term);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
 
         return model;
     }

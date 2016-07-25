@@ -45,13 +45,10 @@
             <div class="input-group">
                 <input type="text" id="search_field" type="text" placeholder="What are you looking for?" ng-model="term" class="form-control" />
                 <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="search()" type="button">Go!</button>
+                    <button class="btn btn-default" ng-click="search()" ng-submit="search()" type="button">Go!</button>
                 </span>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <h6 claass="text-center" style="color:white;">hi</h6>
     </div>
 </body>
 </html>
