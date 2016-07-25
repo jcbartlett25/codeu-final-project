@@ -7,6 +7,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.View;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
@@ -16,7 +20,7 @@ public class HelloWorldService {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldService.class);
 
-    public ModelAndView search(String term) throws IOException {
+    public ArrayList<String> search(String term) throws IOException {
 
         Jedis jedis;
         JedisIndex index = null;
@@ -31,15 +35,19 @@ public class HelloWorldService {
 
         WikiSearch wikisearch = WikiSearch.search(term, index); 
 
+        List<Entry<String, Integer>> results = wikisearch.getResults();
         wikisearch.print();
 
-        ModelAndView model = new ModelAndView();
-        model.setViewName("random");
+        ArrayList<String> urls = new ArrayList<String>();
+
+        for (Entry<String, Integer> result : results) {
+            urls.add(result.getKey());
+        }
 
         //model.addObject("link1", "twitter.com");
         //model.addObject("link2", "facebook.com");
         
-        return model;
+        return urls;
     }
 
 }

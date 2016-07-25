@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ArrayList;
 
 import redis.clients.jedis.Jedis;
 
@@ -52,6 +53,11 @@ public class WikiSearch {
 			System.out.println(entry);
 		}
 	}
+
+    public List<Entry<String, Integer>> getResults() {
+        List<Entry<String, Integer>> entries = sort();
+        return entries;
+    }
 	
 	/**
 	 * Computes the union of two search results.

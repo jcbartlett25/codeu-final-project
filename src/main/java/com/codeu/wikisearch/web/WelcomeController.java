@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -60,21 +62,22 @@ public class WelcomeController {
     }
   
     @RequestMapping(value="/api/search", method = RequestMethod.GET)
-    public ModelAndView search(@RequestParam("term") String term) throws IOException {
+    @ResponseBody()
+    public ArrayList<String> search(@RequestParam("term") String term) throws IOException {
 
         logger.debug("path hit!");
         logger.debug("search term: " + term);
         
-        ModelAndView model = null;
+        ArrayList<String> urls = null;
 
         try {
-            model = helloWorldService.search(term);
+            urls = helloWorldService.search(term);
         }
         catch(IOException e) {
             e.printStackTrace();
         }
 
-        return model;
+        return urls;
     }
 
 
