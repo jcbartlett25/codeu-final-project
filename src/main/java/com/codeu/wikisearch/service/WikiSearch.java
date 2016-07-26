@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import java.util.ArrayList;
+
 import redis.clients.jedis.Jedis;
 
 
@@ -184,9 +186,14 @@ public class WikiSearch {
 	 * @return
 	 */
 	public static WikiSearch search(String term, JedisIndex index) {
-		Map<String, Integer> map = index.getCounts(term);
+		Map<String, Integer> map = index.getCountsFaster(term);
 		return new WikiSearch(map);
 	}
+
+    public List<Entry<String, Integer>> getResults() {
+        List<Entry<String, Integer>> entries = sort();
+        return entries;
+    }
 
 	public static void main(String[] args) throws IOException {
 		
