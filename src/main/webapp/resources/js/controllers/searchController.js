@@ -11,11 +11,17 @@ angular
               $scope.urls = [];
               $scope.loading = true;
               searchService.search($scope.term).then(function(data) {
-                
-                data.forEach(function(url) {
+                if(data) {
+                  data.forEach(function(url) {
                     $scope.urls.push(url);
-                });
-                $scope.loading = false;
+                  });
+                  $scope.urls.reverse();
+                  $scope.loading = false;
+                }
+                else {
+                  $scope.urls = [];
+                  $scope.loading = false;
+                }
                 console.log($scope.urls);
               });
           }

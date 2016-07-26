@@ -24,47 +24,9 @@ public class JedisMaker {
 	 */
 	public static Jedis make() throws IOException {
 
-
-		// assemble the file name
-		String slash = File.separator;
-		String filename = "redis_url.txt";
-        StringBuilder sb = new StringBuilder();
-		BufferedReader br;
-		/*
-		try {
-                    br = new BufferedReader(new FileReader(filename));
-		} catch (FileNotFoundException e1) {
-                    System.out.println("File not found: " + filename);
-                    printInstructions();
-                    return null;
-		}
-		
-		while (true) {
-			String line = br.readLine();
-			if (line == null) break;
-			sb.append(line);
-		}
-		br.close();
-		*/
-		URI uri;
-		try {
-			uri = new URI("redis://redistogo:659f435e50fe1e085384830edf241662@catfish.redistogo.com:10904/");
-		} catch (URISyntaxException e) {
-			System.out.println("Reading file: " + filename);
-			System.out.println("It looks like this file does not contain a valid URI.");
-			printInstructions();
-			return null;
-		}
-		String host = uri.getHost();
-		int port = uri.getPort();
-
-		String[] array = uri.getAuthority().split("[:@]");
-		String auth = array[1];
-
-		//Here's an older version that read the auth code from an environment variable.
-		//String host = "dory.redistogo.com";
-		//int port = 10534;
-		//String auth = System.getenv("REDISTOGO_AUTH");
+		String host = "159.203.240.126";
+		int port = 6379;
+		String auth = "8ef61828350d9e00ce6f23bb1573dc48";
 
 		Jedis jedis = new Jedis(host, port);
 
@@ -75,7 +37,7 @@ public class JedisMaker {
 			System.out.println("on port " + port);
 			System.out.println("with authcode " + auth);
 			System.out.println("Got exception " + e);
-			printInstructions();
+			//printInstructions();
 			return null;
 		}
 		return jedis;
