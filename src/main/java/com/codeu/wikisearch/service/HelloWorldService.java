@@ -31,8 +31,6 @@ public class HelloWorldService {
 
     public ArrayList<String> search(String term) throws IOException {
 
-        // fetcher used to get pages from Wikipedia
-        final WikiFetcher wf = new WikiFetcher();
         Jedis jedis;
         JedisIndex index = null;
         try {
@@ -43,27 +41,17 @@ public class HelloWorldService {
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*     
-        String source = "https://en.wikipedia.org/wiki/Joel_Stratton";
-        WikiCrawler wc = new WikiCrawler(source, index);
         
-        // for testing purposes, load up the queue
-        Elements paragraphs = wf.fetchWikipedia(source);
-        wc.queueInternalLinks(paragraphs);
+        ArrayList<String> urls = search(term, true, index);
 
-        ArrayList<String> urls = new ArrayList<String>();
+        return urls;
+    }
 
-        // loop until we index a new page
-        String res;
-        int i = 1;
-        do {
-            res = wc.crawl(false);
-            i++;
-        } while (!wc.isQueueEmpty() && i<20);
-        */
-        
-        
+    private ArrayList<String> search(String term, boolean testing, JedisIndex index) throws IOException {
+
+        // fetcher used to get pages from Wikipedia
+        final WikiFetcher wf = new WikiFetcher();
+
         WikiSearch wikisearch = WikiSearch.search(term, index); 
 
         List<Entry<String, Integer>> results = wikisearch.getResults();
@@ -77,6 +65,30 @@ public class HelloWorldService {
         }
 
         return urls;
+    }
+
+    public ArrayList<String> index(String url, JedisIndex index) throws IOException {
+        
+        // fetcher used to get pages from Wikipedia
+        final WikiFetcher wf = new WikiFetcher();
+
+        WikiCrawler wc = new WikiCrawler(url, index);
+        
+        // for testing purposes, load up the queue
+        Elements paragraphs = wf.fetchWikipedia(url);
+        wc.queueInternalLinks(paragraphs);
+
+        ArrayList<String> urls = new ArrayList<String>();
+
+        // loop until we index a new page
+        String res;
+        int i = 1;
+        do {
+            res = wc.crawl(false);
+            i++;
+        } while (!wc.isQueueEmpty() && i<20);
+
+        return new ArrayList<String>();
     }
 
 }

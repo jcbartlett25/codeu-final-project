@@ -55,11 +55,6 @@ public class WikiSearch {
 			System.out.println(entry);
 		}
 	}
-
-    public List<Entry<String, Integer>> getResults() {
-        List<Entry<String, Integer>> entries = sort();
-        return entries;
-    }
 	
 	/**
 	 * Computes the union of two search results.
