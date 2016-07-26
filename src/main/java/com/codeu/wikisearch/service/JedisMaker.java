@@ -46,9 +46,10 @@ public class JedisMaker {
 		}
 		br.close();
 		*/
+
 		URI uri;
 		try {
-			uri = new URI("redis://redistogo:659f435e50fe1e085384830edf241662@catfish.redistogo.com:10904/");
+			uri = new URI("redis://redistogo:d6a14dd6482b39a169996110c4e86386@catfish.redistogo.com:10989/");
 		} catch (URISyntaxException e) {
 			System.out.println("Reading file: " + filename);
 			System.out.println("It looks like this file does not contain a valid URI.");
