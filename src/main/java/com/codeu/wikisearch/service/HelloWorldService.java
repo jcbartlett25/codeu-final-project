@@ -42,12 +42,12 @@ public class HelloWorldService {
             e.printStackTrace();
         }
         
-        ArrayList<String> urls = search(term, true, index);
+        ArrayList<String> urls = search(term, index);
 
         return urls;
     }
 
-    private ArrayList<String> search(String term, boolean testing, JedisIndex index) throws IOException {
+    private ArrayList<String> search(String term, JedisIndex index) throws IOException {
 
         // fetcher used to get pages from Wikipedia
         final WikiFetcher wf = new WikiFetcher();

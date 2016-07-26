@@ -32,6 +32,11 @@ public class WikiSearch {
 	public WikiSearch(Map<String, Integer> map) {
 		this.map = map;
 	}
+
+    public List<Entry<String, Integer>> getResults() {
+        List<Entry<String, Integer>> entries = sort();
+        return entries;
+    }
 	
 	/**
 	 * Looks up the relevance of a given URL.
