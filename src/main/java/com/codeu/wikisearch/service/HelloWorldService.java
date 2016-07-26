@@ -10,6 +10,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
@@ -68,11 +72,10 @@ public class HelloWorldService {
 
         ArrayList<String> urls = new ArrayList<String>();
 
-        
         for (Entry<String, Integer> result : results) {
             urls.add(result.getKey());
         }
-        
+
         return urls;
     }
 

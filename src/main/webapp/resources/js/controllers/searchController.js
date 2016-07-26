@@ -11,7 +11,6 @@ angular
               $scope.urls = [];
               $scope.loading = true;
               searchService.search($scope.term).then(function(data) {
-                
                 if(data) {
                   data.forEach(function(url) {
                     $scope.urls.push(url);
