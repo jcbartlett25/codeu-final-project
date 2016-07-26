@@ -196,11 +196,6 @@ public class WikiSearch {
 		return new WikiSearch(map);
 	}
 
-    public List<Entry<String, Integer>> getResults() {
-        List<Entry<String, Integer>> entries = sort();
-        return entries;
-    }
-
 	public static void main(String[] args) throws IOException {
 		
 		// make a JedisIndex
