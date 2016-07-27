@@ -31,17 +31,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.codeu.wikisearch.service.HelloWorldService;
+import com.codeu.wikisearch.service.SearchService;
 
 @Controller
-public class WelcomeController {
+public class SearchController {
 
-    private final Logger logger = LoggerFactory.getLogger(WelcomeController.class);
-    private final HelloWorldService helloWorldService;
+    private final Logger logger = LoggerFactory.getLogger(SearchController.class);
+    private final SearchService searchService;
 
     @Autowired
-    public WelcomeController(HelloWorldService helloWorldService) {
-        this.helloWorldService = helloWorldService;
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
     }
 
     // Index page routing
@@ -72,7 +72,7 @@ public class WelcomeController {
         ArrayList<String> urls = null;
 
         try {
-            urls = helloWorldService.search(term);
+            urls = searchService.search(term);
         }
         catch(IOException e) {
             e.printStackTrace();

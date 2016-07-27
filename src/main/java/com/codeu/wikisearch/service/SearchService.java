@@ -25,9 +25,9 @@ import java.util.Map.Entry;
 import java.util.List;
 
 @Service
-public class HelloWorldService {
+public class SearchService {
 
-    private static final Logger logger = LoggerFactory.getLogger(HelloWorldService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SearchService.class);
 
     public ArrayList<String> search(String term) throws IOException {
 
