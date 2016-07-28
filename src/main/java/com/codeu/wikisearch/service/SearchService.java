@@ -54,13 +54,13 @@ public class SearchService {
 
         WikiSearch wikisearch = WikiSearch.search(term, index); 
 
-        List<Entry<String, Integer>> results = wikisearch.getResults();
+        List<Entry<String, Double>> results = wikisearch.getResults();
         wikisearch.print();
         
 
         ArrayList<String> urls = new ArrayList<String>();
 
-        for (Entry<String, Integer> result : results) {
+        for (Entry<String, Double> result : results) {
             urls.add(result.getKey());
         }
 

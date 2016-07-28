@@ -18,12 +18,12 @@ import org.jsoup.select.Elements;
  */
 public class TermCounter {
 	
-	private Map<String, Integer> map;
+	private Map<String, Double> map;
 	private String label;
 	
 	public TermCounter(String label) {
 		this.label = label;
-		this.map = new HashMap<String, Integer>();
+		this.map = new HashMap<String, Double>();
 	}
 	
 	public String getLabel() {
@@ -35,9 +35,9 @@ public class TermCounter {
 	 * 
 	 * @return
 	 */
-	public int size() {
-		int total = 0;
-		for (Integer value: map.values()) {
+	public Double size() {
+		Double total = 0.0;
+		for (Double value: map.values()) {
 			total += value;
 		}
 		return total;
@@ -52,6 +52,7 @@ public class TermCounter {
 		for (Node node: paragraphs) {
 			processTree(node);
 		}
+		calculateRelativeTf();
 	}
 	
 	/**
@@ -91,7 +92,15 @@ public class TermCounter {
 	 */
 	public void incrementTermCount(String term) {
 		// System.out.println(term);
-		put(term, get(term) + 1);
+		put(term, get(term) + 1.0);
+	}
+
+	private void calculateRelativeTf() {
+		Double size = size();
+		for (String key : keySet()) {
+			map.put(key, get(key) / size);
+			System.out.println(get(key));
+		}
 	}
 
 	/**
@@ -100,7 +109,7 @@ public class TermCounter {
 	 * @param term
 	 * @param count
 	 */
-	public void put(String term, int count) {
+	public void put(String term, Double count) {
 		map.put(term, count);
 	}
 
@@ -110,9 +119,9 @@ public class TermCounter {
 	 * @param term
 	 * @return
 	 */
-	public Integer get(String term) {
-		Integer count = map.get(term);
-		return count == null ? 0 : count;
+	public Double get(String term) {
+		Double count = map.get(term);
+		return count == null ? 0.0 : count;
 	}
 
 	/**
@@ -129,7 +138,7 @@ public class TermCounter {
 	 */
 	public void printCounts() {
 		for (String key: keySet()) {
-			Integer count = get(key);
+			Double count = get(key);
 			System.out.println(key + ", " + count);
 		}
 		System.out.println("Total of all counts = " + size());
