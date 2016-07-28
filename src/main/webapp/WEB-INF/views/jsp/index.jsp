@@ -50,8 +50,8 @@
     <div>
         <img class="center-block" ng-show="loading" src="/resources/img/loading.gif" height="30px"/>
     <div>
-    <div>
-        <div class="text-center">
+    <div id="container">
+        <div class="text-center" id="search_results">
             <div style="color:white;" ng-repeat="result in results"><a ng-href="{{result.url}}">{{result.title}}</a></div>
         </div>
     </div>

@@ -52,7 +52,7 @@ public class TermCounter {
 		for (Node node: paragraphs) {
 			processTree(node);
 		}
-		calculateRelativeTf();
+		calculateRelativeTermFrequency();
 	}
 	
 	/**
@@ -95,13 +95,28 @@ public class TermCounter {
 		put(term, get(term) + 1.0);
 	}
 
-	private void calculateRelativeTf() {
+	private void calculateRelativeTermFrequency() {
 		Double size = size();
 		for (String key : keySet()) {
 			map.put(key, get(key) / size);
-			System.out.println(get(key));
+			//System.out.println(get(key));
 		}
 	}
+
+	/*
+	private void calculateTfIdf() {
+
+		Double totalSize = index.urlSetKeys().size();
+		List<String> terms = index.termSet();
+		List<String> urls = new ArrayList<String>();
+		for (String term : terms) {
+
+			Double termSize = index.getURLs.size();
+			Double idf = Math.log(totalSize / termSize);
+			put(term, get(term) * idf);
+		}
+	}
+	*/
 
 	/**
 	 * Adds a term to the map with a given count.
@@ -144,18 +159,4 @@ public class TermCounter {
 		System.out.println("Total of all counts = " + size());
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
-		String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
-		
-		WikiFetcher wf = new WikiFetcher();
-		Elements paragraphs = wf.fetchWikipedia(url);
-		
-		TermCounter counter = new TermCounter(url.toString());
-		counter.processElements(paragraphs);
-		counter.printCounts();
-	}
 }

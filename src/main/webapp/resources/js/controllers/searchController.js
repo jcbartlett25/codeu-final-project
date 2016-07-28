@@ -15,7 +15,7 @@ angular
               $scope.loading = true;
 
               // Call the search service to make the HTTP request
-              searchService.search($scope.term).then(function(data) {
+              searchService.search($scope.term.toLowerCase()).then(function(data) {
 
                 if(data) {
 
