@@ -1,6 +1,5 @@
 package com.codeu.wikisearch.service;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +9,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+
+//import java.util.StringBuilder;
 
 import redis.clients.jedis.Jedis;
 
@@ -24,6 +25,8 @@ public class JedisMaker {
 	 */
 	public static Jedis make() throws IOException {
 
+		//BufferedReader br = new BufferedReader(new FileReader("jedis.txt"));
+		
 		String host = "159.203.240.126";
 		int port = 6379;
 		String auth = "8ef61828350d9e00ce6f23bb1573dc48";
@@ -42,22 +45,6 @@ public class JedisMaker {
 		}
 		return jedis;
 	}
-
-
-	/**
-	 *
-	 */
-	private static void printInstructions() {
-		System.out.println("");
-		System.out.println("To connect to RedisToGo, you have to provide a file called");
-		System.out.println("redis_url.txt that contains the URL of your Redis server.");
-		System.out.println("If you select an instance on the RedisToGo web page,");
-		System.out.println("you should see a URL that contains the information you need:");
-		System.out.println("redis://redistogo:AUTH@HOST:PORT");
-		System.out.println("Create a file called redis_url.txt in the src/resources");
-		System.out.println("directory, and paste in the URL.");
-	}
-
 
 	/**
 	 * @param args

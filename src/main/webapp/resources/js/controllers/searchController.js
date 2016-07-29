@@ -45,7 +45,7 @@ angular
             var result = {};
 
             // Making the title readable
-            var wikiTitle = url.substr(30).replace(/_/g," ").replace(/%26/g,"&").replace(/%27/g,"'");
+            var wikiTitle = decodeURIComponent(url.substr(30)).replace(/_/g," ");
             result.url = url;
             result.title = wikiTitle;
             return result;
