@@ -22,19 +22,19 @@ import redis.clients.jedis.Jedis;
 public class WikiSearch {
 	
 	// map from URLs that contain the term(s) to relevance score
-	private Map<String, Integer> map;
+	private Map<String, Double> map;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param map
 	 */
-	public WikiSearch(Map<String, Integer> map) {
+	public WikiSearch(Map<String, Double> map) {
 		this.map = map;
 	}
 
-    public List<Entry<String, Integer>> getResults() {
-        List<Entry<String, Integer>> entries = sort();
+    public List<Entry<String, Double>> getResults() {
+        List<Entry<String, Double>> entries = sort();
         return entries;
     }
 	
@@ -44,9 +44,9 @@ public class WikiSearch {
 	 * @param url
 	 * @return
 	 */
-	public Integer getRelevance(String url) {
-		Integer relevance = map.get(url);
-		return relevance==null ? 0: relevance;
+	public Double getRelevance(String url) {
+		Double relevance = map.get(url);
+		return relevance==null ? 0.0: relevance;
 	}
 	
 	/**
@@ -55,8 +55,8 @@ public class WikiSearch {
 	 * @param map
 	 */
 	public  void print() {
-		List<Entry<String, Integer>> entries = sort();
-		for (Entry<String, Integer> entry: entries) {
+		List<Entry<String, Double>> entries = sort();
+		for (Entry<String, Double> entry: entries) {
 			System.out.println(entry);
 		}
 	}
@@ -69,7 +69,7 @@ public class WikiSearch {
 	 */
 	public WikiSearch or(WikiSearch that) {
         
-        Map<String, Integer> or = new HashMap<String, Integer>();
+        Map<String, Double> or = new HashMap<String, Double>();
 
         // Add all the values from the previous map
         for (String searchWord : this.map.keySet()) {
@@ -79,8 +79,8 @@ public class WikiSearch {
 
         for (String searchWord : that.map.keySet()) {
 
-        	Integer relevance1 = this.getRelevance(searchWord);
-        	Integer relevance2 = that.getRelevance(searchWord);
+        	Double relevance1 = this.getRelevance(searchWord);
+        	Double relevance2 = that.getRelevance(searchWord);
         	or.put(searchWord, totalRelevance(relevance1,relevance2));
         }
 
@@ -96,15 +96,15 @@ public class WikiSearch {
 	 */
 	public WikiSearch and(WikiSearch that) {
         
-        Map<String, Integer> and = new HashMap<String, Integer>();
+        Map<String, Double> and = new HashMap<String, Double>();
 
         for(String searchWord : this.map.keySet()) {
 
         	// Needs to exist and be greater than zero
-        	if (that.getRelevance(searchWord) != null && !that.getRelevance(searchWord).equals(0)) {
+        	if (that.getRelevance(searchWord) != null && !that.getRelevance(searchWord).equals(0.0)) {
 
-        		int relevance1 = this.getRelevance(searchWord);
-	        	int relevance2 = that.getRelevance(searchWord);
+        		Double relevance1 = this.getRelevance(searchWord);
+	        	Double relevance2 = that.getRelevance(searchWord);
 	        	and.put(searchWord, totalRelevance(relevance1,relevance2));
         	}
         }
@@ -121,7 +121,7 @@ public class WikiSearch {
 	 */
 	public WikiSearch minus(WikiSearch that) {
         
-        Map<String, Integer> minus = new HashMap<String, Integer>();
+        Map<String, Double> minus = new HashMap<String, Double>();
 
         for (String searchWord : this.map.keySet()) {
 
@@ -142,7 +142,7 @@ public class WikiSearch {
 	 * @param rel2: relevance score for the second search
 	 * @return
 	 */
-	protected int totalRelevance(Integer rel1, Integer rel2) {
+	protected Double totalRelevance(Double rel1, Double rel2) {
 		// simple starting place: relevance is the sum of the term frequencies.
 		return rel1 + rel2;
 	}
@@ -152,23 +152,23 @@ public class WikiSearch {
 	 * 
 	 * @return List of entries with URL and relevance.
 	 */
-	public List<Entry<String, Integer>> sort() {
+	public List<Entry<String, Double>> sort() {
         
-        List<Entry<String, Integer>> sorted = new LinkedList<Entry<String, Integer>>(this.map.entrySet());
+        List<Entry<String, Double>> sorted = new LinkedList<Entry<String, Double>>(this.map.entrySet());
 
-        Comparator<Entry<String, Integer>> comparator = getEntryComparator();
+        Comparator<Entry<String, Double>> comparator = getEntryComparator();
         
         Collections.sort(sorted, comparator);
 
         return sorted;
 	}
 
-	private Comparator<Entry<String, Integer>> getEntryComparator() {
+	private Comparator<Entry<String, Double>> getEntryComparator() {
 
-		Comparator<Entry<String, Integer>> comparator = new Comparator<Entry<String, Integer>>() {
+		Comparator<Entry<String, Double>> comparator = new Comparator<Entry<String, Double>>() {
 
             @Override
-            public int compare(Entry<String, Integer> thisOne, Entry<String, Integer> thatOne) {
+            public int compare(Entry<String, Double> thisOne, Entry<String, Double> thatOne) {
 
             	if (thisOne.getValue() > thatOne.getValue())
             		return 1;
@@ -192,7 +192,7 @@ public class WikiSearch {
 	 * @return
 	 */
 	public static WikiSearch search(String term, JedisIndex index) {
-		Map<String, Integer> map = index.getCountsFaster(term);
+		Map<String, Double> map = index.getCountsFaster(term);
 		return new WikiSearch(map);
 	}
 

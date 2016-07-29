@@ -110,27 +110,4 @@ public class WikiCrawler {
         }
     }
     
-    public static void main(String[] args) throws IOException {
-        
-        // make a WikiCrawler
-        Jedis jedis = JedisMaker.make();
-        JedisIndex index = new JedisIndex(jedis); 
-        String source = "https://en.wikipedia.org/wiki/Java_(programming_language)";
-        WikiCrawler wc = new WikiCrawler(source, index);
-        
-        // for testing purposes, load up the queue
-        Elements paragraphs = wf.fetchWikipedia(source);
-        wc.queueInternalLinks(paragraphs);
-
-        // loop until we index a new page
-        String res;
-        do {
-            res = wc.crawl(false);
-        } while (res == null);
-        
-        Map<String, Integer> map = index.getCounts("the");
-        for (Entry<String, Integer> entry: map.entrySet()) {
-            System.out.println(entry);
-        }
-    }
 }

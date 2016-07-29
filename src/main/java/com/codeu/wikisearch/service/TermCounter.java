@@ -18,12 +18,12 @@ import org.jsoup.select.Elements;
  */
 public class TermCounter {
 	
-	private Map<String, Integer> map;
+	private Map<String, Double> map;
 	private String label;
 	
 	public TermCounter(String label) {
 		this.label = label;
-		this.map = new HashMap<String, Integer>();
+		this.map = new HashMap<String, Double>();
 	}
 	
 	public String getLabel() {
@@ -35,9 +35,9 @@ public class TermCounter {
 	 * 
 	 * @return
 	 */
-	public int size() {
-		int total = 0;
-		for (Integer value: map.values()) {
+	public Double size() {
+		Double total = 0.0;
+		for (Double value: map.values()) {
 			total += value;
 		}
 		return total;
@@ -52,6 +52,7 @@ public class TermCounter {
 		for (Node node: paragraphs) {
 			processTree(node);
 		}
+		calculateRelativeTermFrequency();
 	}
 	
 	/**
@@ -91,8 +92,31 @@ public class TermCounter {
 	 */
 	public void incrementTermCount(String term) {
 		// System.out.println(term);
-		put(term, get(term) + 1);
+		put(term, get(term) + 1.0);
 	}
+
+	private void calculateRelativeTermFrequency() {
+		Double size = size();
+		for (String key : keySet()) {
+			map.put(key, get(key) / size);
+			//System.out.println(get(key));
+		}
+	}
+
+	/*
+	private void calculateTfIdf() {
+
+		Double totalSize = index.urlSetKeys().size();
+		List<String> terms = index.termSet();
+		List<String> urls = new ArrayList<String>();
+		for (String term : terms) {
+
+			Double termSize = index.getURLs.size();
+			Double idf = Math.log(totalSize / termSize);
+			put(term, get(term) * idf);
+		}
+	}
+	*/
 
 	/**
 	 * Adds a term to the map with a given count.
@@ -100,7 +124,7 @@ public class TermCounter {
 	 * @param term
 	 * @param count
 	 */
-	public void put(String term, int count) {
+	public void put(String term, Double count) {
 		map.put(term, count);
 	}
 
@@ -110,9 +134,9 @@ public class TermCounter {
 	 * @param term
 	 * @return
 	 */
-	public Integer get(String term) {
-		Integer count = map.get(term);
-		return count == null ? 0 : count;
+	public Double get(String term) {
+		Double count = map.get(term);
+		return count == null ? 0.0 : count;
 	}
 
 	/**
@@ -129,24 +153,10 @@ public class TermCounter {
 	 */
 	public void printCounts() {
 		for (String key: keySet()) {
-			Integer count = get(key);
+			Double count = get(key);
 			System.out.println(key + ", " + count);
 		}
 		System.out.println("Total of all counts = " + size());
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
-		String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
-		
-		WikiFetcher wf = new WikiFetcher();
-		Elements paragraphs = wf.fetchWikipedia(url);
-		
-		TermCounter counter = new TermCounter(url.toString());
-		counter.processElements(paragraphs);
-		counter.printCounts();
-	}
 }
