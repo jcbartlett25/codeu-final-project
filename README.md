@@ -13,7 +13,8 @@
 * Our project, as it stands is a Wikipedia search engine that can do a couple fun things as well
 
 ### What types of fun things?
-* Coming soon...
+* NLP!
+* A modified TF-IDF page ranking system!
 
 ## How do I run this thing?
 ### Gradle to the rescue!
