@@ -15,8 +15,21 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.stereotype.Component;
 
+// Word2Vec libraries
+import org.canova.api.util.ClassPathResource;
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
+import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
+import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
+import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Arrays;
 
 /*
 import javax.ws.rs.Consumes;
@@ -33,16 +46,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 */
 import com.codeu.wikisearch.service.SearchService;
+import com.codeu.wikisearch.service.Word2VecMaker;
 
 @Controller
 public class SearchController {
 
     private final Logger logger = LoggerFactory.getLogger(SearchController.class);
     private final SearchService searchService;
+    //private Word2Vec vec;
 
     @Autowired
-    public SearchController(SearchService searchService) {
+    public SearchController(SearchService searchService) throws Exception {
         this.searchService = searchService;
+        //vec = Word2VecMaker.make("wiki_model.txt");
     }
 
     // Index page routing
@@ -72,8 +88,16 @@ public class SearchController {
         
         ArrayList<String> urls = null;
 
+        // Get Word2Vec word vector
+        /*Collection<String> wordvec = vec.wordsNearest(term, 5);
+        System.out.println("printing nearest neighbors...");
+        System.out.println(wordvec);*/
+
         try {
-            urls = searchService.search(term);
+            /*if (!wordvec.isEmpty()) 
+                urls = searchService.search(term, wordvec);
+            else*/
+                urls = searchService.search(term);
         }
         catch(IOException e) {
             e.printStackTrace();

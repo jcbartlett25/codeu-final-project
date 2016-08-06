@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
-
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;
@@ -41,11 +41,45 @@ public class SearchService {
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        // crawling
+        //index(term, index);
         
         ArrayList<String> urls = search(term, index);
 
         return urls;
     }
+
+    /*// Called when there is word2vec associated with search term
+    public ArrayList<String> search(String term, Collection<String> wordvec) throws IOException {
+        Jedis jedis;
+        JedisIndex index = null;
+
+        try {
+            jedis = JedisMaker.make();
+            index = new JedisIndex(jedis);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        WikiSearch search1 = WikiSearch.search(term, index);
+        WikiSearch union = null;
+        for (String word : wordvec) {
+            WikiSearch search2 = WikiSearch.search(word, index);
+            union = search1.or(search2);
+        }
+
+        List<Entry<String, Double>> results = union.getResults();
+        union.print();
+
+        ArrayList<String> urls = new ArrayList<String>();
+        for (Entry<String, Double> result : results) {
+            urls.add(result.getKey());
+        }
+
+        return urls;
+    }*/
 
     private ArrayList<String> search(String term, JedisIndex index) throws IOException {
 
@@ -86,7 +120,7 @@ public class SearchService {
         do {
             res = wc.crawl(false);
             i++;
-        } while (!wc.isQueueEmpty() && i<20);
+        } while (!wc.isQueueEmpty() && i<100);
 
         return new ArrayList<String>();
     }
