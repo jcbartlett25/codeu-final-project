@@ -74,7 +74,6 @@ public class SearchController {
             BufferedReader reader = new BufferedReader(fr);
             while ((line = reader.readLine()) != null) {
                 stopWords.add(line);
-                logger.debug(line);
             }
 
             // Process Word2Vec

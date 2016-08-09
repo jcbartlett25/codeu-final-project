@@ -141,7 +141,7 @@ public class SearchService {
                 if (!stopWords.contains(terms[i])) {
                     WikiSearch search1 = processWordVec(terms[i], wordVec, stopWords, index);
                     WikiSearch search2 = processWordVec(terms[i+1], wordVec, stopWords, index);
-                    wikisearch = search1.or(search2);
+                    wikisearch = search1.and(search2);
                 }
             }
         }
@@ -150,7 +150,7 @@ public class SearchService {
             return urls;
         }
         List<Entry<String, Double>> results = wikisearch.getResults();
-        wikisearch.print();
+        //wikisearch.print();
 
         for (Entry<String, Double> result : results) {
             urls.add(result.getKey());
