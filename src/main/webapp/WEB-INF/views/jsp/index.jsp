@@ -38,7 +38,7 @@
     <div class="container">
         <h1 class="text-center" id="search_title">WikiSearch</h1><br>
     </div>
-    <div class="container">
+    <div class="container" id="search_bar">
         <div class="col-lg-4 col-lg-offset-4">
             <div class="input-group">
                 <input type="text" id="search_field" type="text" placeholder="What are you looking for?" ng-model="term" class="form-control" />
@@ -51,7 +51,7 @@
     <div>
         <img class="center-block" ng-show="loading" src="/resources/img/loading.gif" height="30px"/>
     <div>
-    <div id="container">
+    <div class="scrollable" id="container">
         <div class="text-center container" id="search_results">
             <div style="color:white;" ng-repeat="result in results"><a ng-href="{{result.url}}">{{result.title}}</a></div>
         </div>

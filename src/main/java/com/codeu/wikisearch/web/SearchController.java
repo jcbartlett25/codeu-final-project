@@ -25,6 +25,10 @@ import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreproc
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +53,7 @@ import javax.ws.rs.core.Response;
 */
 import com.codeu.wikisearch.service.SearchService;
 import com.codeu.wikisearch.service.Word2VecMaker;
+import com.codeu.wikisearch.service.WikiFetcher;
 
 @Controller
 public class SearchController {
@@ -68,6 +73,7 @@ public class SearchController {
             BufferedReader reader = new BufferedReader(fr);
             while ((line = reader.readLine()) != null) {
                 stopWords.add(line);
+                logger.debug(line);
             }
         } catch(FileNotFoundException e) {
             System.out.println("Unable to open file");
@@ -119,6 +125,17 @@ public class SearchController {
         }
         catch(Exception e) { //IOException
             e.printStackTrace();
+        }
+
+        // fetcher used to get pages from Wikipedia
+        WikiFetcher wf = new WikiFetcher();
+
+        for (int i = 0; i < 5; i++) {
+
+            Elements paragraphs = wf.fetchWikipedia(urls.get(i));
+            for(Node node : paragraphs) {
+                logger.debug(node.toString());
+            }
         }
 
         return urls;

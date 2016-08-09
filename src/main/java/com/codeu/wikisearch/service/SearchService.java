@@ -125,7 +125,7 @@ public class SearchService {
 
         // fetcher used to get pages from Wikipedia
         final WikiFetcher wf = new WikiFetcher();
-
+        
         WikiSearch wikisearch = null;
         WikiSearch search1 = WikiSearch.search(terms[0], index);
         for (int i = 1; i < terms.length; i++) {
