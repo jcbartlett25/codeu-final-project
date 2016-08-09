@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;
 import java.util.HashSet;
+import java.util.HashMap;
 
 // Word2Vec libraries
 import org.canova.api.util.ClassPathResource;
@@ -40,7 +41,9 @@ import com.codeu.wikisearch.service.Word2VecMaker;
 public class SearchService {
     private static final Logger logger = LoggerFactory.getLogger(SearchService.class);
 
-    public ArrayList<String> search(String term, HashSet<String> stopWords) throws Exception { //IOException
+    public ArrayList<String> search(String term, 
+                                    HashMap<String, ArrayList<String>> wordVec, 
+                                    HashSet<String> stopWords) throws Exception {
 
         Jedis jedis;
         JedisIndex index = null;
@@ -57,7 +60,8 @@ public class SearchService {
         //index(term, index);
 
         String[] separatedWords = term.split(" ");
-        ArrayList<String> urls = search(separatedWords, stopWords, index);
+
+        ArrayList<String> urls = search(separatedWords, wordVec, stopWords, index);
 
         return urls;
     }
@@ -121,30 +125,56 @@ public class SearchService {
         return urls;
     }*/
 
-    private ArrayList<String> search(String[] terms, HashSet<String> stopWords, JedisIndex index) throws IOException {
+    private ArrayList<String> search(String[] terms, 
+                                     HashMap<String, ArrayList<String>> wordVec,
+                                     HashSet<String> stopWords, JedisIndex index) throws IOException {
 
-        // fetcher used to get pages from Wikipedia
-        final WikiFetcher wf = new WikiFetcher();
-        
+        ArrayList<String> urls = new ArrayList<String>();
         WikiSearch wikisearch = null;
-        WikiSearch search1 = WikiSearch.search(terms[0], index);
-        for (int i = 1; i < terms.length; i++) {
-            if (!stopWords.contains(terms[i])) {
-                WikiSearch search2 = WikiSearch.search(terms[i], index);
-                wikisearch = search1.or(search2);
+        if (terms.length == 1) {
+            if (stopWords.contains(terms[0])) {
+                System.out.println("THIS IS A STOP WORD");
+                return urls;
+            }
+            wikisearch = processWordVec(terms[0], wordVec, stopWords, index);
+        } else {
+            for (int i = 0; i < terms.length - 1; i++) {
+                if (!stopWords.contains(terms[i])) {
+                    WikiSearch search1 = processWordVec(terms[i], wordVec, stopWords, index);
+                    WikiSearch search2 = processWordVec(terms[i+1], wordVec, stopWords, index);
+                    wikisearch = search1.or(search2);
+                }
             }
         }
 
         List<Entry<String, Double>> results = wikisearch.getResults();
         wikisearch.print();
-    
-        ArrayList<String> urls = new ArrayList<String>();
 
         for (Entry<String, Double> result : results) {
             urls.add(result.getKey());
         }
 
         return urls;
+    }
+
+    private WikiSearch processWordVec(String term, 
+                                HashMap<String, ArrayList<String>> wordVec,
+                                HashSet<String> stopWords, JedisIndex index) {
+        
+        WikiSearch search = WikiSearch.search(term, index);
+
+        ArrayList<String> relatedWords = wordVec.get(term);
+        if (relatedWords != null) {
+            WikiSearch union = null;
+            for (String word : relatedWords) {
+                if (!stopWords.contains(word)) {
+                    WikiSearch search2 = WikiSearch.search(word, index);
+                    union = search.or(search2);
+                    search = union;
+                }
+            }
+        }
+        return search;
     }
 
 
