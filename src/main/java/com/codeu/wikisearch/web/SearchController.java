@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.io.*;
 
 /*
 import javax.ws.rs.Consumes;
@@ -53,12 +55,27 @@ public class SearchController {
 
     private final Logger logger = LoggerFactory.getLogger(SearchController.class);
     private final SearchService searchService;
-    //private Word2Vec vec;
+    private final HashSet<String> stopWords = new HashSet<String>();
 
     @Autowired
     public SearchController(SearchService searchService) throws Exception {
         this.searchService = searchService;
-        //vec = Word2VecMaker.make("wiki_model.txt");
+        //vec = Word2VecMaker.make("wiki_model3.txt");
+        // Process stopwords
+        String line = null;
+        try {
+            FileReader fr = new FileReader("stopwords.txt");
+            BufferedReader reader = new BufferedReader(fr);
+            while ((line = reader.readLine()) != null) {
+                stopWords.add(line);
+            }
+        } catch(FileNotFoundException e) {
+            System.out.println("Unable to open file");
+            
+        } catch(IOException e) {
+            System.out.println("Error reading/writing file");
+        }
+
     }
 
     // Index page routing
@@ -88,8 +105,9 @@ public class SearchController {
         
         ArrayList<String> urls = null;
 
+        /*
         // Get Word2Vec word vector
-        /*Collection<String> wordvec = vec.wordsNearest(term, 5);
+        Collection<String> wordvec = vec.wordsNearest(term, 5);
         System.out.println("printing nearest neighbors...");
         System.out.println(wordvec);*/
 
@@ -97,9 +115,9 @@ public class SearchController {
             /*if (!wordvec.isEmpty()) 
                 urls = searchService.search(term, wordvec);
             else*/
-                urls = searchService.search(term);
+                urls = searchService.search(term, stopWords);
         }
-        catch(IOException e) {
+        catch(Exception e) { //IOException
             e.printStackTrace();
         }
 
