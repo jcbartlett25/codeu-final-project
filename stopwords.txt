@@ -21,7 +21,6 @@ against
 ah
 all
 almost
-alone
 along
 already
 also
@@ -32,7 +31,6 @@ among
 amongst
 an
 and
-announce
 another
 any
 anybody
@@ -71,7 +69,6 @@ been
 before
 beforehand
 begin
-beginning
 beginnings
 begins
 behind
@@ -153,10 +150,6 @@ f
 far
 few
 ff
-fifth
-first
-five
-fix
 followed
 following
 follows
@@ -211,11 +204,9 @@ him
 himself
 his
 hither
-home
 how
 howbeit
 however
-hundred
 i
 id
 ie
@@ -229,11 +220,8 @@ important
 in
 inc
 indeed
-index
-information
 instead
 into
-invention
 inward
 is
 isn't
@@ -246,7 +234,7 @@ i've
 j
 just
 k
-keep	keeps
+keep
 kept
 kg
 km
@@ -291,7 +279,6 @@ meanwhile
 merely
 mg
 might
-million
 miss
 ml
 more
@@ -301,13 +288,11 @@ mostly
 mr
 mrs
 much
-mug
 must
 my
 myself
 n
 na
-name
 namely
 nay
 nd
@@ -372,8 +357,6 @@ overall
 owing
 own
 p
-page
-pages
 part
 particular
 particularly
@@ -389,7 +372,6 @@ possibly
 potentially
 pp
 predominantly
-present
 previously
 primarily
 probably
@@ -418,11 +400,9 @@ regardless
 regards
 related
 relatively
-research
 respectively
 resulted
 resulting
-results
 right
 run
 s
@@ -433,7 +413,6 @@ say
 saying
 says
 sec
-section
 see
 seeing
 seem
@@ -477,7 +456,6 @@ sometimes
 somewhat
 somewhere
 soon
-sorry
 specifically
 specified
 specify
@@ -548,4 +526,3 @@ out
 should
 maybe
 may
-

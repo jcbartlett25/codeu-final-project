@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.io.*;
 
 /*
@@ -56,26 +57,40 @@ public class SearchController {
     private final Logger logger = LoggerFactory.getLogger(SearchController.class);
     private final SearchService searchService;
     private final HashSet<String> stopWords = new HashSet<String>();
-
+    private final HashMap<String, ArrayList<String>> wordVec = new HashMap<String, ArrayList<String>>();
     @Autowired
     public SearchController(SearchService searchService) throws Exception {
         this.searchService = searchService;
-        //vec = Word2VecMaker.make("wiki_model3.txt");
-        // Process stopwords
+
         String line = null;
         try {
+            // Process stopwords
             FileReader fr = new FileReader("stopwords.txt");
             BufferedReader reader = new BufferedReader(fr);
             while ((line = reader.readLine()) != null) {
                 stopWords.add(line);
             }
+
+            // Process Word2Vec
+            /*FileReader fr = new FileReader("WordVectors.txt");
+            BufferedReader reader = new BufferedReader(fr);
+            while ((line = reader.readLine()) != null) {
+                String[] split = line.split("\t");
+                String keyWord = split[0];
+                String[] relatedWords = split[1].split(" "); 
+                ArrayList<String> rw = new ArrayList<String>();
+                for (String word : relatedWords) {
+                    rw.add(word);
+                }
+                wordVec.put(keyWord, rw);
+            }*/
+
         } catch(FileNotFoundException e) {
-            System.out.println("Unable to open file");
+            logger.debug("Unable to open file");
             
         } catch(IOException e) {
-            System.out.println("Error reading/writing file");
+            logger.debug("Error reading/writing file");
         }
-
     }
 
     // Index page routing
@@ -105,17 +120,8 @@ public class SearchController {
         
         ArrayList<String> urls = null;
 
-        /*
-        // Get Word2Vec word vector
-        Collection<String> wordvec = vec.wordsNearest(term, 5);
-        System.out.println("printing nearest neighbors...");
-        System.out.println(wordvec);*/
-
         try {
-            /*if (!wordvec.isEmpty()) 
-                urls = searchService.search(term, wordvec);
-            else*/
-                urls = searchService.search(term, stopWords);
+            urls = searchService.search(term, wordVec, stopWords);
         }
         catch(Exception e) { //IOException
             e.printStackTrace();
