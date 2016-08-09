@@ -133,7 +133,6 @@ public class SearchService {
         WikiSearch wikisearch = null;
         if (terms.length == 1) {
             if (stopWords.contains(terms[0])) {
-                System.out.println("THIS IS A STOP WORD");
                 return urls;
             }
             wikisearch = processWordVec(terms[0], wordVec, stopWords, index);
@@ -147,6 +146,9 @@ public class SearchService {
             }
         }
 
+        if (wikisearch == null) {
+            return urls;
+        }
         List<Entry<String, Double>> results = wikisearch.getResults();
         wikisearch.print();
 
