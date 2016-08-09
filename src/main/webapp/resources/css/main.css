@@ -1,6 +1,6 @@
 body {
     background-image: url(/resources/img/grey_wash_wall.png);
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 #search_title {
@@ -13,9 +13,20 @@ body {
     position: relative;
 }
 
+#search_bar {
+    padding-bottom: 4em;
+}
+
  #search_results {
      /*overflow-y: scroll;*/
  }
+
+.scrollable {
+    
+    height: 400px; /* or any value */
+    overflow-y: auto;
+}
+
 
 a {
     color: white;
