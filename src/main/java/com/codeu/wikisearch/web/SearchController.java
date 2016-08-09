@@ -136,6 +136,7 @@ public class SearchController {
         // fetcher used to get pages from Wikipedia
         WikiFetcher wf = new WikiFetcher();
 
+        /*
         for (int i = 0; i < 5; i++) {
 
             Elements paragraphs = wf.fetchWikipedia(urls.get(i));
@@ -143,7 +144,7 @@ public class SearchController {
                 logger.debug(node.toString());
             }
         }
-
+        */
         return urls;
     }
 
