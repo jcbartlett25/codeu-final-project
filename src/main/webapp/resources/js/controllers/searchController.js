@@ -6,9 +6,15 @@ angular
           $scope.term = '';
           $scope.results = [];
           $scope.loading = false;
+          $scope.isFirstSearch = true;
 
           // Self explanatory
           $scope.search = function() {
+
+              if($scope.isFirstSearch) {
+                $('#search_area').animate({bottom: '15em'});
+                $scope.isFirstSearch = false;
+              }
               
               // Reset the current results and display loading wheel
               $scope.results = [];
@@ -26,6 +32,17 @@ angular
 
                   // For some reason the results come in backwards...
                   $scope.results.reverse();
+                  for (var i = 0; i < $scope.results.length; i++) {
+                    console.log($scope.results[i]);
+
+                    if($scope.results[i].title.toLowerCase() == $scope.term) {
+
+                      $scope.results.unshift($scope.results[i]);
+                      $scope.results.splice(i+1, 1);
+                      $scope.loading = false;
+                      return;
+                    }
+                  }
                   $scope.loading = false;
                 }
                 else {
@@ -35,8 +52,10 @@ angular
                   $scope.loading = false;
                 }
 
+                
+
                 // For testing purposes
-                console.log($scope.results);
+                //console.log($scope.results);
               });
           }
 

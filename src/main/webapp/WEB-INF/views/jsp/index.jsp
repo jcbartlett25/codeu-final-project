@@ -34,6 +34,7 @@
         <ul class="nav nav-pills">
         </ul>
     </nav>
+    <div id="search_area">
     <div class="container">
         <h1 class="text-center" id="search_title">WikiSearch</h1><br>
     </div>
@@ -51,9 +52,10 @@
         <img class="center-block" ng-show="loading" src="/resources/img/loading.gif" height="30px"/>
     <div>
     <div id="container">
-        <div class="text-center" id="search_results">
+        <div class="text-center container" id="search_results">
             <div style="color:white;" ng-repeat="result in results"><a ng-href="{{result.url}}">{{result.title}}</a></div>
         </div>
+    </div>
     </div>
 </body>
 </html>

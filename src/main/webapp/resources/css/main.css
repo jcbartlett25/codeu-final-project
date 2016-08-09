@@ -1,10 +1,21 @@
 body {
-    background-image: url(/resources/img/footer_lodyas.png);
+    background-image: url(/resources/img/grey_wash_wall.png);
+    overflow-y: auto;
 }
 
 #search_title {
+    position: relative;
+    padding-top: 6.5em;
     color: white;
 }
+
+#search_area {
+    position: relative;
+}
+
+ #search_results {
+     /*overflow-y: scroll;*/
+ }
 
 a {
     color: white;

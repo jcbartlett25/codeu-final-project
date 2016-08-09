@@ -107,7 +107,10 @@ public class JedisIndex {
 		for (String url : urls) {
 			System.out.println(url);
 			Double count = new Double((String) res.get(i++));
-			map.put(url, count);
+
+			if(count > 0.001) {
+				map.put(url, count);
+			}	
 		}
 		return map;
 	}
