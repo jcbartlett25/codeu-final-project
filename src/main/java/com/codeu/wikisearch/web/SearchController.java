@@ -74,22 +74,24 @@ public class SearchController {
             BufferedReader reader = new BufferedReader(fr);
             while ((line = reader.readLine()) != null) {
                 stopWords.add(line);
-                logger.debug(line);
             }
 
+            
             // Process Word2Vec
-            /*FileReader fr = new FileReader("WordVectors.txt");
-            BufferedReader reader = new BufferedReader(fr);
+            fr = new FileReader("WordVectors2.txt");
+            reader = new BufferedReader(fr);
             while ((line = reader.readLine()) != null) {
-                String[] split = line.split("\t");
+                String[] split = line.split("\\s+");
                 String keyWord = split[0];
-                String[] relatedWords = split[1].split(" "); 
-                ArrayList<String> rw = new ArrayList<String>();
-                for (String word : relatedWords) {
-                    rw.add(word);
+                ArrayList<String> relatedWords = new ArrayList<String>();
+                for (int i = 1; i < split.length; i++) {
+                    relatedWords.add(split[i]);
                 }
-                wordVec.put(keyWord, rw);
-            }*/
+                wordVec.put(keyWord, relatedWords);
+            }
+            
+
+            reader.close();
 
         } catch(FileNotFoundException e) {
             logger.debug("Unable to open file");
