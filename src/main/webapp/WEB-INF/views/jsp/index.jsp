@@ -51,10 +51,13 @@
     <div>
         <img class="center-block" ng-show="loading" src="/resources/img/loading.gif" height="30px"/>
     <div>
-    <div class="scrollable" id="container">
+    <div class="scrollable" ng-show="results.length > 0 && !isFirstSearch" id="container">
         <div class="text-center container" id="search_results">
             <div style="color:white;" ng-repeat="result in results"><a ng-href="{{result.url}}">{{result.title}}</a></div>
         </div>
+    </div>
+    <div class="center-block text-center" ng-show="!isFirstSearch && results.length <= 0 && !loading" style="color:white;">
+        No Relevant Results :(
     </div>
     </div>
 </body>
