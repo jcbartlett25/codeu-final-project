@@ -56,74 +56,17 @@ public class SearchService {
             e.printStackTrace();
         }
 
-        // crawling
-        //index(term, index);
-
         String[] separatedWords = term.split(" ");
 
+        // crawling
+        if (separatedWords[0].equals("crawl:")) {
+            int n = Integer.parseInt(separatedWords[2]);
+            index(separatedWords[1], n, index);
+        }
         ArrayList<String> urls = search(separatedWords, wordVec, stopWords, index);
 
         return urls;
     }
-
-
-    // When I tried to move word2vec instantiation inside searchservice...
-    /*private ArrayList<String> search(String term, JedisIndex index, 
-                                     Collection<String> wordvec) throws IOException {
-
-        // fetcher used to get pages from Wikipedia
-        final WikiFetcher wf = new WikiFetcher();
-
-        WikiSearch search1 = WikiSearch.search(term, index);
-        WikiSearch union = null;
-        for (String word : wordvec) {
-            WikiSearch search2 = WikiSearch.search(word, index);
-            union = search1.or(search2);
-        }
-
-        List<Entry<String, Double>> results = union.getResults();
-        union.print();
-
-        ArrayList<String> urls = new ArrayList<String>();
-        for (Entry<String, Double> result : results) {
-            urls.add(result.getKey());
-        }
-
-        return urls;
-    }*/
-
-
-    /*
-    // Called when there is word2vec associated with search term
-    public ArrayList<String> search(String term, Collection<String> wordvec) throws IOException {
-        Jedis jedis;
-        JedisIndex index = null;
-
-        try {
-            jedis = JedisMaker.make();
-            index = new JedisIndex(jedis);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        WikiSearch search1 = WikiSearch.search(term, index);
-        WikiSearch union = null;
-        for (String word : wordvec) {
-            WikiSearch search2 = WikiSearch.search(word, index);
-            union = search1.or(search2);
-        }
-
-        List<Entry<String, Double>> results = union.getResults();
-        union.print();
-
-        ArrayList<String> urls = new ArrayList<String>();
-        for (Entry<String, Double> result : results) {
-            urls.add(result.getKey());
-        }
-
-        return urls;
-    }*/
 
     private ArrayList<String> search(String[] terms, 
                                      HashMap<String, ArrayList<String>> wordVec,
@@ -131,22 +74,34 @@ public class SearchService {
 
         ArrayList<String> urls = new ArrayList<String>();
         WikiSearch wikisearch = null;
-        if (terms.length == 1) {
-            if (stopWords.contains(terms[0])) {
-                return urls;
-            }
+
+        if (terms.length == 1 && !stopWords.contains(terms[0])) {
             wikisearch = processWordVec(terms[0], wordVec, stopWords, index);
         } else {
-            for (int i = 0; i < terms.length - 1; i++) {
+
+            // Find intersection of all the words in search query
+            wikisearch = processWordVec(terms[0], wordVec, stopWords, index);
+            for (int i = 1; i < terms.length; i++) {
                 if (!stopWords.contains(terms[i])) {
-                    WikiSearch search1 = processWordVec(terms[i], wordVec, stopWords, index);
-                    WikiSearch search2 = processWordVec(terms[i+1], wordVec, stopWords, index);
-                    wikisearch = search1.and(search2);
+                    WikiSearch search = processWordVec(terms[i], wordVec, stopWords, index);
+                    wikisearch = wikisearch.and(search);
+                }
+            }
+
+            // If intersection of search words is empty, find union
+            if (wikisearch.getResults().size() == 0) {
+                wikisearch = processWordVec(terms[0], wordVec, stopWords, index);
+                for (int i = 1; i < terms.length; i++) {
+                    if (!stopWords.contains(terms[i])) {
+                        WikiSearch search = processWordVec(terms[i], wordVec, stopWords, index);
+                        wikisearch = wikisearch.or(search);
+                    }
                 }
             }
         }
 
-        if (wikisearch == null) {
+        // If no match is found, return empty arraylist
+        if (wikisearch == null || wikisearch.getResults().size() == 0) {
             return urls;
         }
         List<Entry<String, Double>> results = wikisearch.getResults();
@@ -180,7 +135,7 @@ public class SearchService {
     }
 
 
-    public ArrayList<String> index(String url, JedisIndex index) throws IOException {
+    public ArrayList<String> index(String url, int n, JedisIndex index) throws IOException {
         
         // fetcher used to get pages from Wikipedia
         final WikiFetcher wf = new WikiFetcher();
@@ -199,7 +154,7 @@ public class SearchService {
         do {
             res = wc.crawl(false);
             i++;
-        } while (!wc.isQueueEmpty() && i<50);
+        } while (!wc.isQueueEmpty() && i < n);
 
         return new ArrayList<String>();
     }
